@@ -1,0 +1,20 @@
+@import 'colors';
+
+.cyberFrameStyle{
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - $PaddingPhone * 2);
+    height: calc(100% - $PaddingPhone * 2);
+
+    margin: $PaddingPhone;
+    border: 1px solid $primary-color;
+
+    box-shadow: 0 0 15px -5px $secondary-color, inset 0 0 15px -5px $secondary-color;
+
+
+    box-sizing: content-box;
+
+    pointer-events: none;
+}

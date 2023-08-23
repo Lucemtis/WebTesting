@@ -1,0 +1,126 @@
+@import 'colors';
+
+$grid-gap: $PaddingPhone;
+$number-grid-columns: 96;
+$number-grid-rows: 54;
+$random-hole-probability: 0.3; // Probabilité de créer un trou (30% dans cet exemple)
+$random-hole-probability-two: 0; // Probabilité de créer un trou (30% dans cet exemple)
+
+.gridBcg-container {
+  all: unset;
+  position: fixed;
+  top: calc($grid-gap / 4);
+  left: calc($grid-gap / 4) ;
+  width: calc(100% - $grid-gap);
+  height: calc(100% - $grid-gap);
+  pointer-events: none;
+  z-index: -10;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.gridBcg{
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.gridBcg2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.gridBcg::before {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+
+  $box-shadow-values: ();
+
+  @for $col from 0 to $number-grid-columns {
+    @for $row from 0 to $number-grid-rows {
+      $x-offset: $col * $grid-gap;
+      $y-offset: $row * $grid-gap;
+
+      $random-number: random(); // Génère un nombre aléatoire entre 0 et 1
+
+      @if $random-number > $random-hole-probability {
+        $box-shadow-values: append(
+          $box-shadow-values,
+          #{$x-offset } #{$y-offset } #{$secondary-color},
+          comma
+        );
+      }
+    }
+  }
+
+  box-shadow: $box-shadow-values;
+}
+
+@function generate-box-shadow($positionX, $positionY, $number-grid-columns, $number-grid-rows, $grid-gap, $random-hole-probability-two, $secondary-color) {
+  $box-shadow-values: ();
+
+  @for $col from 0 to $number-grid-columns {
+    @for $row from 0 to $number-grid-rows {
+      $x-offset: calc(($col * $grid-gap * 13.5) + $positionX);
+      $y-offset: calc(($row * $grid-gap * 8) + $positionY);
+  
+      $random-number: random(); // Génère un nombre aléatoire entre 0 et 1
+  
+      @if $random-number > $random-hole-probability-two {
+        $box-shadow-values: append(
+          $box-shadow-values,
+          #{$x-offset } #{$y-offset } #{$secondary-color},
+          comma
+        );
+      }
+    }
+  }
+
+  @return $box-shadow-values;
+}
+
+
+.gridBcg2::before {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 14px;
+  background: transparent;
+
+  $positionX: 0px;
+  $positionY: -7px;
+
+  $box-shadow-values: generate-box-shadow($positionX, $positionY, $number-grid-columns, $number-grid-rows, $grid-gap, $random-hole-probability-two, $secondary-color);
+
+  box-shadow: $box-shadow-values;
+}
+
+
+.gridBcg2::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 1px;
+  background: transparent;
+
+  $positionX: -7px;
+  $positionY: 0px;
+
+  $box-shadow-values: generate-box-shadow($positionX, $positionY, $number-grid-columns, $number-grid-rows, $grid-gap, $random-hole-probability-two, $secondary-color);
+
+  box-shadow: $box-shadow-values;
+}
+
+.gridBcg-container {
+  top: calc($grid-gap * 2.25);
+  left: calc($grid-gap * 2.25) ;
+  width: calc(100% - ($grid-gap * 4));
+  height: calc(100% - ($grid-gap * 4));
+}
